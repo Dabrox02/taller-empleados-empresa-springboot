@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title th:text="${titulo}"></title>
+</head>
+<body>
+    <h1>Lista Empleados</h1>
+    <div th:if="${empleados.isEmpty()}">No hay datos por mostrar</div>
+    <table th:if="${not empleados.isEmpty()}" border="1" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Contrato</th>
+                <th>Horas</th>
+                <th>Salario</th>
+                <th>Bonificaciones</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="empleado : ${empleados}">
+                <td th:text="${empleado.nombre}"></td>
+                <td th:text="${empleado.apellido}"></td>
+                <td th:text="${empleado.email}"></td>
+                <td th:text="${empleado.tipoContrato}"></td>
+                <td th:if="${empleado.tipoContrato == 'Horas'}" th:text="${empleado.horaTrabajo}"></td>
+                <td th:unless="${empleado.tipoContrato == 'Horas'}" th:text="${0}"></td>
+                <td th:if="${empleado.tipoContrato == 'Tiempo Completo' or empleado.tipoContrato == 'Tiempo Completo mas Bonificaciones'}" th:text="${empleado.getFullTime()}"></td>
+                <td th:unless="${empleado.tipoContrato == 'Tiempo Completo' or empleado.tipoContrato == 'Tiempo Completo mas Bonificaciones'}" th:text="${0}"></td>
+                <td th:if="${empleado.tipoContrato == 'Tiempo Completo mas Bonificaciones'}" th:text="${empleado.getFullTimeBono()}"></td>
+                <td th:unless="${empleado.tipoContrato == 'Tiempo Completo mas Bonificaciones'}" th:text="${0}"></td>
+                <td th:text="${empleado.ValoTotal()}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
